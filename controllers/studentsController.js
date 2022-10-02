@@ -4,7 +4,15 @@ const controller = express.Router();
 const studentData = require('../studentData.json')
 
 controller.get('/', (req, res) => {
-    res.json(studentData)
+    let { min, max, limit = 25 } = req.query;
+    limit = Number(limit);
+    console.log(`limit: ${limit} min: ${min} max: ${max}`)
+    //SELECT * FROM students WHERE id >= $1 AND id <= $2 LIMIT $3 [min, max, limit]
+
+    let dataForDelievery = { ...studentData }
+    dataForDelievery.students = dataForDelievery.students.slice(0, limit)
+
+    res.json(dataForDelievery)
 })
 
 controller.get('/:id', (req, res) => {

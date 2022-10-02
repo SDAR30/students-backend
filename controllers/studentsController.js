@@ -6,11 +6,18 @@ const studentData = require('../studentData.json')
 controller.get('/', (req, res) => {
     let { min, max, limit = 25 } = req.query;
     limit = Number(limit);
+    min = Number(min)
+    max = Number(max)
     console.log(`limit: ${limit} min: ${min} max: ${max}`)
     //SELECT * FROM students WHERE id >= $1 AND id <= $2 LIMIT $3 [min, max, limit]
 
     let dataForDelievery = { ...studentData }
-    dataForDelievery.students = dataForDelievery.students.slice(0, limit)
+    if (min >= 0 && max > min) {
+        dataForDelievery.students = dataForDelievery.students.slice(min-1, max)
+    }else{
+        dataForDelievery.students = dataForDelievery.students.slice(0, limit)
+
+    }
 
     res.json(dataForDelievery)
 })

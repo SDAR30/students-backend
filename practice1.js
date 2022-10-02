@@ -31,3 +31,10 @@ function Hero(name) {
 }
 let hero1 = new Hero("goku");
 console.log(hero1)
+
+/*
+Please confirm that your app listens for HTTP requests 
+on IP address 0.0.0.0 on the port specified by the environment variable PORT
+-turns out it was fine with default settings.
+
+*/

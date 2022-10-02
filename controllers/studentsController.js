@@ -13,7 +13,8 @@ controller.get('/', (req, res) => {
 
     let dataForDelievery = { ...studentData }
     if (min >= 0 && max > min) {
-        dataForDelievery.students = dataForDelievery.students.slice(min-1, max)
+        let adjustedMax = min + (limit-1) > max ? max : min + (limit-1);
+        dataForDelievery.students = dataForDelievery.students.slice(min-1, adjustedMax)
     }else{
         dataForDelievery.students = dataForDelievery.students.slice(0, limit)
 

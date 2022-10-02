@@ -23,6 +23,27 @@ controller.get('/', (req, res) => {
     res.json(dataForDelievery)
 })
 
+controller.get('/:id/gradeAverage',(req,res)=>{
+    try{
+        const studentID = req.params.id;
+        if (!/[0-9]/.test(studentID)) {
+            res.send('Student ID must be a number')
+            return;
+        }
+        const singleStudent = studentData.students.find(s => s.id === studentID)
+        if (singleStudent) {
+            let avg = (singleStudent.grades.reduce((acc,cur)=>acc + Number(cur),0))/singleStudent.grades.length;
+            res.json("grades: " + singleStudent.grades+ " average: " + avg)
+        } else {
+            res.send('student not found')
+        }
+
+    }catch(err){
+        console.log("error: "+ err)
+        res.status(500).send("aN error occured")
+    }
+})
+
 controller.get('/:id', (req, res) => {
     try {
         const studentID = req.params.id;

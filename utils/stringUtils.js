@@ -1,6 +1,6 @@
 const repeatNTimesWithSpace = (string, n) => {
     if (!string) return '';
-    const arr = new Array(n).fill(string)
+    const arr = new Array(Number(n)).fill(string)
     //return (string + ' ').repeat(n);
     return arr.join(' ')
 }

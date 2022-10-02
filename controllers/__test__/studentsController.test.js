@@ -25,4 +25,15 @@ describe('returns json data for all students', () => {
             expect(response.body.students.length).toBe(25);
         })
     })
+
+    it('returns an object with # of students using min & max', async ()=>{
+        await supertest(app).get("/students?min=4&max=20&limit=4")
+        .expect(200)
+        .then(response =>{
+            expect(response.body.students).toBeInstanceOf(Array);
+            expect(response.body.students.length).toBe(4);
+            expect(response.body.students[0].id).toBe("4");
+            expect(response.body.students[response.body.students.length-1].id).toBe("7");
+        })
+    })
 })

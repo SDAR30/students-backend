@@ -1,9 +1,11 @@
 const express = require('express')
 const app = express();
+const cors = require('cors')
 
 const studentsController = require('./controllers/studentsController')
 const namesController = require('./controllers/namesController')
 
+app.use(cors())
 app.use('/students', studentsController)
 app.use('/names', namesController)
 

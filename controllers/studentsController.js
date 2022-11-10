@@ -68,6 +68,19 @@ controller.get('/:id', async (req, res) => {
     }
 })
 
+controller.get('/:id/grades', async (req, res) => {
+    const studentID = req.params.id;
+    console.log("hit")
+
+    try {
+        const grades = await db.any('SELECT * FROM grades WHERE student_id = $1', [studentID])
+        grades.sort((a,b)=> a.date - b.date) //sort from oldest date to newest date
+        res.json(grades)
+    } catch (err) {
+        res.status(500).send(err)
+    }
+})
+
 //npm install -D nodemon (install nodemon but not in heroku, only locally)
 
 module.exports = controller;

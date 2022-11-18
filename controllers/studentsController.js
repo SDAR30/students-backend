@@ -11,7 +11,7 @@ controller.get('/', async (req, res) => {
     // min = Number(min)
     // max = Number(max)
     // console.log(`limit: ${limit} min: ${min} max: ${max}`)
-    // //SELECT * FROM students WHERE id >= $1 AND id <= $2 LIMIT $3 [min, max, limit]
+    //SELECT * FROM students WHERE id >= $1 AND id <= $2 LIMIT $3 [min, max, limit]
 
     // let dataForDelievery = { ...studentData }
     // if (min >= 0 && max > min) {
@@ -77,6 +77,20 @@ controller.get('/:id/grades', async (req, res) => {
         grades.sort((a,b)=> a.date - b.date) //sort from oldest date to newest date
         res.json(grades)
     } catch (err) {
+        res.status(500).send(err)
+    }
+})
+
+controller.delete('/:id', async (req,res)=>{
+    try{
+        const studentID = req.params.id;
+
+        await db.none('DELETE FROM grades WHERE student_id = $1', [studentID])
+
+        const deletedStudent = await db.one(`DELETE FROM students WHERE id = $1 RETURNING *`, [studentID])
+        res.json(deletedStudent);
+
+    }catch(err){
         res.status(500).send(err)
     }
 })

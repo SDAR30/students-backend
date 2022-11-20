@@ -71,7 +71,6 @@ controller.get('/:id', async (req, res) => {
 
 controller.get('/:id/grades', async (req, res) => {
     const studentID = req.params.id;
-    console.log("hit")
 
     try {
         const grades = await db.any('SELECT * FROM grades WHERE student_id = $1', [studentID])

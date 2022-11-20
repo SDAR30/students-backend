@@ -38,7 +38,7 @@ controller.get('/:id/gradeAverage', (req, res) => {
         const singleStudent = studentData.students.find(s => s.id === studentID)
         if (singleStudent) {
             let avg = (singleStudent.grades.reduce((acc, cur) => acc + Number(cur), 0)) / singleStudent.grades.length;
-            res.json("grades: " + singleStudent.grades + " average: " + avg)
+            res.json({grades: singleStudent.grades, average: avg})
         } else {
             res.send('student not found')
         }
@@ -114,18 +114,20 @@ controller.put('/:id', async (req, res) => {
 
 controller.post('/', async (req, res) => {
     try {
-        const { username, firstname, lastname, password = '1234', email } = req.body;
+        //const { username, firstname, lastname, password = '1234', email } = req.body;
+        // if (username.length < 4)
+        //     throw ({ message: "username must be 4 or more characters" })
+        // const hashedPassword = await bcrypt.hash(password, 10);
+        // console.log(hashedPassword)
 
-        if (username.length < 4)
-            throw ({ message: "username must be 4 or more characters" })
+        const {firstname, lastname, company, city, email, skill, pic } = req.body;
+        if (!firstname || !lastname)
+             throw ({ message: "You cannot leave name empty" })
 
-
-        const hashedPassword = await bcrypt.hash(password, 10);
-        console.log(hashedPassword)
-
+        let defaultPic = 'https://storage.googleapis.com/hatchways-app.appspot.com/assessments/data/frontend/images/autemporroplaceat.jpg'
 
         let user = await db.oneOrNone('INSERT INTO students (firstname, lastname, company, city, skill, email, pic) VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING firstname, email',
-            [firstname, lastname, 'pursuit', 'new york', 'software', email.toLowerCase(), 'https://storage.googleapis.com/hatchways-app.appspot.com/assessments/data/frontend/images/autemporroplaceat.jpg']);
+            [firstname, lastname, company, city, skill, email.toLowerCase(), defaultPic]);
 
         res.json(user)
 

@@ -1,8 +1,5 @@
-DROP DATABASE IF EXISTS students_db;
-
-CREATE DATABASE students_db;
-
-\c students_db;
+DROP TABLE IF EXISTS students CASCADE;
+DROP TABLE IF EXISTS grades CASCADE;
 
 CREATE TABLE students (
     id SERIAL PRIMARY KEY, 

@@ -13,6 +13,12 @@
 //     max: 30
 // }
 
+// if(process.env.NODE_ENV === ' production'){
+//     cn.ssl = {
+//         rejectUnauthorized: false,
+//     }
+// }
+
 // //set up our connection to databse
 // const db = pgp(cn);
 
@@ -22,18 +28,22 @@
 
 const pgp = require('pg-promise')();
 require("dotenv").config();
-const URL = 'postgres://postgres:123456@127.0.0.1:5432/students_db';
 
-const cn = {
-    connectionString: URL,
-    allowExitOnIdle: true,
-    max: 30
-}
-if(process.env.NODE_ENV === ' production'){
-    cn.ssl = {
+const { DB_URL, PG_HOST, PG_PORT, PG_DATABASE, PG_USER  } = process.env;
+const cn = DB_URL
+  ? {
+      connectionString: DB_URL,
+      max: 30,
+      ssl: {
         rejectUnauthorized: false,
+      },
     }
-}
+  : {
+      host: PG_HOST,
+      port: PG_PORT,
+      database: PG_DATABASE,
+      user: PG_USER,
+    };
 
 const db = pgp(cn)
 

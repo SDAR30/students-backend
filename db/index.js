@@ -29,7 +29,7 @@
 const pgp = require('pg-promise')();
 require("dotenv").config();
 
-const { DB_URL, PG_HOST, PG_PORT, PG_DATABASE, PG_USER  } = process.env;
+const { DATABASE_URL, PG_HOST, PG_PORT, PG_DATABASE, PG_USER  } = process.env;
 const cn = DATABASE_URL
   ? {
       connectionString: DB_URL,

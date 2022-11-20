@@ -30,7 +30,7 @@ const pgp = require('pg-promise')();
 require("dotenv").config();
 
 const { DB_URL, PG_HOST, PG_PORT, PG_DATABASE, PG_USER  } = process.env;
-const cn = DB_URL
+const cn = DATABASE_URL
   ? {
       connectionString: DB_URL,
       max: 30,

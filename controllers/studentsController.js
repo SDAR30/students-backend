@@ -1,5 +1,6 @@
 const express = require('express');
 const controller = express.Router();
+const bcrypt = require('bcrypt');
 
 const studentData = require('../studentData.json')
 
@@ -74,15 +75,15 @@ controller.get('/:id/grades', async (req, res) => {
 
     try {
         const grades = await db.any('SELECT * FROM grades WHERE student_id = $1', [studentID])
-        grades.sort((a,b)=> a.date - b.date) //sort from oldest date to newest date
+        grades.sort((a, b) => a.date - b.date) //sort from oldest date to newest date
         res.json(grades)
     } catch (err) {
         res.status(500).send(err)
     }
 })
 
-controller.delete('/:id', async (req,res)=>{
-    try{
+controller.delete('/:id', async (req, res) => {
+    try {
         const studentID = req.params.id;
 
         await db.none('DELETE FROM grades WHERE student_id = $1', [studentID])
@@ -90,7 +91,47 @@ controller.delete('/:id', async (req,res)=>{
         const deletedStudent = await db.one(`DELETE FROM students WHERE id = $1 RETURNING *`, [studentID])
         res.json(deletedStudent);
 
-    }catch(err){
+    } catch (err) {
+        res.status(500).send(err)
+    }
+})
+
+controller.put('/:id', async (req, res) => {
+    try {
+        const studentID = req.params.id;
+        const {firstname, lastname, company, city, skill, pic} = req.body;
+        console.log(req.body)
+
+        const updatedUser = await db.one('UPDATE students SET firstname=$1, lastname=$2, company=$3, city=$4, skill=$5, pic=$6 WHERE id = $7 RETURNING *',
+            [firstname, lastname, company, city, skill, pic, studentID])
+
+        res.json(updatedUser)
+
+    } catch (err) {
+        res.status(500).send(err)
+    }
+
+})
+
+controller.post('/', async (req, res) => {
+    try {
+        const { username, firstname, lastname, password = '1234', email } = req.body;
+
+        if (username.length < 4)
+            throw ({ message: "username must be 4 or more characters" })
+
+
+        const hashedPassword = await bcrypt.hash(password, 10);
+        console.log(hashedPassword)
+
+
+        let user = await db.oneOrNone('INSERT INTO students (firstname, lastname, company, city, skill, email, pic) VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING firstname, email',
+            [firstname, lastname, 'pursuit', 'new york', 'software', email.toLowerCase(), 'https://storage.googleapis.com/hatchways-app.appspot.com/assessments/data/frontend/images/autemporroplaceat.jpg']);
+
+        res.json(user)
+
+    } catch (err) {
+        console.log(err)
         res.status(500).send(err)
     }
 })

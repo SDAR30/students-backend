@@ -130,7 +130,7 @@ controller.post('/', async (req, res) => {
 
         let defaultPic = 'https://storage.googleapis.com/hatchways-app.appspot.com/assessments/data/frontend/images/autemporroplaceat.jpg'
 
-        let user = await db.one('INSERT INTO students (firstname, lastname, company, city, skill, email, pic) VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING firstname, email',
+        let user = await db.one('INSERT INTO students (firstname, lastname, company, city, skill, email, pic) VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING *',
             [firstname, lastname, company, city, skill, email.toLowerCase(), defaultPic]);
 
         res.json(user)

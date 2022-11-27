@@ -120,13 +120,17 @@ controller.post('/', async (req, res) => {
         // const hashedPassword = await bcrypt.hash(password, 10);
         // console.log(hashedPassword)
 
-        const {firstname, lastname, company, city, email, skill, pic } = req.body;
+        console.log(req.body)
+
+        let {firstname, lastname, company, city, email, skill, pic } = req.body;
         if (!firstname || !lastname)
              throw ({ message: "You cannot leave name empty" })
 
+        email = email || 'email@email.com'
+
         let defaultPic = 'https://storage.googleapis.com/hatchways-app.appspot.com/assessments/data/frontend/images/autemporroplaceat.jpg'
 
-        let user = await db.oneOrNone('INSERT INTO students (firstname, lastname, company, city, skill, email, pic) VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING firstname, email',
+        let user = await db.one('INSERT INTO students (firstname, lastname, company, city, skill, email, pic) VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING firstname, email',
             [firstname, lastname, company, city, skill, email.toLowerCase(), defaultPic]);
 
         res.json(user)

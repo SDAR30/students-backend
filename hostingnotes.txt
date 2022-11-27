@@ -5,3 +5,9 @@ And click save settings and update deployment
 https://us06web.zoom.us/rec/play/xO-K6BdTYybHWzB4jdNNGJg7umxBMAZJrEfQoBudcQBhTWXLqHEFuNvdYnc4EuETXzvQIWPUAoDJMXU6.co_G_zT63ecTYKFg?continueMode=true&_x_zm_rtaid=qbFeTJXvQoauJexOhOEMNQ.1667842414961.dccc92e188de9290d058eea42a524a09&_x_zm_rhtaid=914
 Watch At 2:00
 
+express: a library creates a framework for handling http requests (web application)
+we could write everything from scratch, but express saves us time by setting up our routes (get, put, etc),
+with their patten. 
+
+node.js: write js on server-side
+
